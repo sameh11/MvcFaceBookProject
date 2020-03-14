@@ -1,0 +1,44 @@
+2020-03-14 12:21:31.5294|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2020-03-14 12:21:31.7261|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2020-03-14 12:21:32.0131|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\Abdelrahman\Desktop\Project\Facebook
+2020-03-14 12:33:39.0989|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2020-03-14 12:33:39.1874|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2020-03-14 12:33:39.1874|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\Abdelrahman\Desktop\Project\Facebook
+2020-03-14 12:36:02.9955|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2020-03-14 12:36:03.3265|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2020-03-14 12:36:03.3411|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\Abdelrahman\Desktop\Project\Facebook
+2020-03-14 12:40:24.9348|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2020-03-14 12:40:25.0501|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2020-03-14 12:40:25.0643|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\Abdelrahman\Desktop\Project\Facebook
+2020-03-14 15:32:21.2055|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2020-03-14 15:32:21.3092|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2020-03-14 15:32:21.3252|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\Abdelrahman\Desktop\Project\Facebook
+2020-03-14 15:32:54.4346|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2020-03-14 15:32:54.5916|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2020-03-14 15:32:54.6014|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\Abdelrahman\Desktop\Project\Facebook
+2020-03-14 15:33:14.2179|WARN|Microsoft.AspNetCore.Identity.SignInManager|User 413a2988-4ccf-43b1-9408-7928dfcde26c cannot sign in without a confirmed email.
+2020-03-14 15:33:14.2891|WARN|Microsoft.AspNetCore.Identity.UserManager|AddLogin for user 413a2988-4ccf-43b1-9408-7928dfcde26c failed because it was already associated with another user.
+2020-03-14 15:35:18.5293|WARN|Microsoft.AspNetCore.Identity.UserManager|Change password failed for user 557730fe-7898-414d-8e0f-06e27a293211.
+2020-03-14 15:46:05.2231|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2020-03-14 15:46:06.0659|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2020-03-14 15:46:06.0981|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\Abdelrahman\Desktop\Project\Facebook
+2020-03-14 15:49:06.0329|WARN|Microsoft.AspNetCore.Identity.SignInManager|User 557730fe-7898-414d-8e0f-06e27a293211 cannot sign in without a confirmed email.
+2020-03-14 15:49:06.1092|WARN|Microsoft.AspNetCore.Identity.UserManager|AddLogin for user 557730fe-7898-414d-8e0f-06e27a293211 failed because it was already associated with another user.
+2020-03-14 16:00:58.1226|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2020-03-14 16:00:58.1860|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2020-03-14 16:00:58.1915|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\Abdelrahman\Desktop\Project\Facebook
+2020-03-14 16:01:06.6502|WARN|Microsoft.AspNetCore.Identity.UserManager|Invalid password for user 46367b17-6751-416d-af9b-63a09ad994c6.
+2020-03-14 16:01:06.6502|WARN|Microsoft.AspNetCore.Identity.SignInManager|User 46367b17-6751-416d-af9b-63a09ad994c6 failed to provide the correct password.
+2020-03-14 16:01:10.6389|WARN|Microsoft.AspNetCore.Identity.UserManager|Invalid password for user 46367b17-6751-416d-af9b-63a09ad994c6.
+2020-03-14 16:01:10.6389|WARN|Microsoft.AspNetCore.Identity.SignInManager|User 46367b17-6751-416d-af9b-63a09ad994c6 failed to provide the correct password.
+2020-03-14 16:01:12.7534|WARN|Microsoft.AspNetCore.Identity.UserManager|Invalid password for user 46367b17-6751-416d-af9b-63a09ad994c6.
+2020-03-14 16:01:12.7534|WARN|Microsoft.AspNetCore.Identity.SignInManager|User 46367b17-6751-416d-af9b-63a09ad994c6 failed to provide the correct password.
+2020-03-14 16:01:14.6826|WARN|Microsoft.AspNetCore.Identity.UserManager|Invalid password for user 46367b17-6751-416d-af9b-63a09ad994c6.
+2020-03-14 16:01:14.6826|WARN|Microsoft.AspNetCore.Identity.SignInManager|User 46367b17-6751-416d-af9b-63a09ad994c6 failed to provide the correct password.
+2020-03-14 16:01:16.7294|WARN|Microsoft.AspNetCore.Identity.UserManager|Invalid password for user 46367b17-6751-416d-af9b-63a09ad994c6.
+2020-03-14 16:01:16.7294|WARN|Microsoft.AspNetCore.Identity.SignInManager|User 46367b17-6751-416d-af9b-63a09ad994c6 failed to provide the correct password.
+2020-03-14 16:01:16.7294|WARN|Microsoft.AspNetCore.Identity.UserManager|User 46367b17-6751-416d-af9b-63a09ad994c6 is locked out.
+2020-03-14 16:01:16.7489|WARN|Microsoft.AspNetCore.Identity.SignInManager|User 46367b17-6751-416d-af9b-63a09ad994c6 is currently locked out.
+2020-03-14 20:19:48.3133|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2020-03-14 20:19:48.4345|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2020-03-14 20:19:48.4662|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\Abdelrahman\Desktop\Project\Facebook
