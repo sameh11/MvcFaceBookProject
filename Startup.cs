@@ -32,6 +32,7 @@ namespace Facebook
 
           //test Git :D
           //sadsaasdasd
+          //dfhfhgf
             services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                 options.SignIn.RequireConfirmedEmail = true;
              })
