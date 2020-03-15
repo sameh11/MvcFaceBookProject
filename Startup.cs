@@ -30,8 +30,7 @@ namespace Facebook
             services.AddDbContextPool<AppDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("MyConnection")));
 
 
-            //   services.AddIdentity<ApplicationUser, IdentityRole>()
-            //.AddEntityFrameworkStores<AppDbContext>();
+          //test Git :D
             services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                 options.SignIn.RequireConfirmedEmail = true;
              })
