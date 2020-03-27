@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Facebook.ViewModels.AddNewPost
+@using Facebook.Models;
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,3 +8,44 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+
+
+<div class="card border-success mb-3 mt-1" style="max-width: 30rem;">
+    <form enctype="multipart/form-data" method="post"
+          asp-controller="Home" asp-action="MakeNewPost">
+
+        <div>
+            <select asp-for="Feel">
+                <option value="100">Select any feeling</option>
+                <option value="0">intersted &#129321;</option>
+                <option value="1">happy &#128515;</option>
+                <option value="2">sad &#128532;</option>
+            </select>
+        </div>
+        <div class="card-body text-success">
+            <textarea asp-for="Text" placeholder="What's in your mind"></textarea>
+            <div class="custom-file">
+                <input asp-for="Photo" class="form-control custom-file-input">
+                <label class="custom-file-label">Choose File...</label>
+            </div>
+        </div>
+        <div class="card-footer bg-transparent border-success">
+            <input type="submit" value="post" />
+        </div>
+
+    </form>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next('.custom-file-label').html(fileName);
+            });
+        });
+    </script>
+}
+
+
+

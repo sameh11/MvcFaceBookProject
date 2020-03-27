@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Facebook.Models.Post
+
+
+<div class="modal" id="MyModalEdit" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Post</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data"
+                      method="post" asp-controller="Profile" asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <select asp-for="feel">
+                            <option value="100">Select any feeling</option>
+                            <option value="0">intersted &#129321;</option>
+                            <option value="1">happy &#128515;</option>
+                            <option value="2">sad &#128532;</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Text" class="control-label"></label>
+                        <input asp-for="Text" class="form-control" />
+                        <span asp-validation-for="Text" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label  for="exampleFormControlFile1">Example file input</label>
+                        <input asp-for="Photo" type="file" class="form-control-file" id="exampleFormControlFile1">
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/Profile/Index" class="btn btn-secondary">Back</a>
+                        <input type="submit" value="post" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -487,3 +487,6 @@ C:\Users\Abdelrahman\Desktop\Git\MvcFaceBookProject\obj\Debug\netcoreapp3.1\Face
 C:\Users\Abdelrahman\Desktop\Git\MvcFaceBookProject\obj\Debug\netcoreapp3.1\Facebook.csproj.CopyComplete
 C:\Users\Abdelrahman\Desktop\Git\MvcFaceBookProject\obj\Debug\netcoreapp3.1\Facebook.dll
 C:\Users\Abdelrahman\Desktop\Git\MvcFaceBookProject\obj\Debug\netcoreapp3.1\Facebook.pdb
+C:\Users\Abdelrahman\Desktop\Git\MvcFaceBookProject\obj\Debug\netcoreapp3.1\Razor\Views\Profile\Edit.cshtml.g.cs
+C:\Users\Abdelrahman\Desktop\Git\MvcFaceBookProject\obj\Debug\netcoreapp3.1\Razor\Views\Profile\EditUserInfo.cshtml.g.cs
+C:\Users\Abdelrahman\Desktop\Git\MvcFaceBookProject\obj\Debug\netcoreapp3.1\Razor\Views\Profile\Index.cshtml.g.cs

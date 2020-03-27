@@ -7,8 +7,8 @@ namespace Facebook.Models
 {
     public enum Feeling
     {
-        sad, 
+        intersted,
         happy,
-        intersted
+        sad
     }
 }

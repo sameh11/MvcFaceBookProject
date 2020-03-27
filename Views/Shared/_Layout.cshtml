@@ -13,6 +13,9 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/OldPostStyle.css" rel="stylesheet" />
+    <link href="~/css/postStyle.css" rel="stylesheet" />
+
     <title>@ViewBag.Title - Facebook</title>
 
 
@@ -25,8 +28,9 @@
                 <img src="~/images/fb.png" width="120" height="35">
             </a>
             <ul class="navbar-nav">
-       
-                @if(SignInManager.IsSignedIn(User)) {
+
+                @if (SignInManager.IsSignedIn(User))
+                {
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -52,16 +56,20 @@
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav ml-auto">
                     @*If the user is signed-in display Logout link*@
-                    @if(SignInManager.IsSignedIn(User)) {
+                    @if (SignInManager.IsSignedIn(User))
+                    {
                         <li class="nav-item">
                             <form method="post" asp-controller="account" asp-action="logout">
+                                <a href="/profile">profile</a>
                                 <button type="submit" style="width:auto"
                                         class="nav-link btn btn-link py-0">
                                     Logout @User.Identity.Name
                                 </button>
                             </form>
                         </li>
-                    } else {
+                    }
+                    else
+                    {
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="account" asp-action="register">
                                 Register
@@ -91,6 +99,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
