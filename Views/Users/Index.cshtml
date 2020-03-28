@@ -1,0 +1,113 @@
+﻿@model SearchViewModel
+@inject UserManager<ApplicationUser> userManager
+<div class="row">
+    <br />
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <form method="get">
+                    <div class="form-group">
+                        <strong>Find by Name or Username:</strong>
+                     
+                        
+                     
+                        <input type="text" name="SearchTerm" class="form-control" />
+                        <br />
+                        <div>
+                            @*<a asp-controller="Users" asp-action="Index" asp-route-SearchTerm="@user.Id"
+                               class="btn btn-primary m-1">Search</a>*@
+                            <button type="submit" class="btn btn-primary">Search</button> |
+                            <a asp-controller="Users">Back to Full List</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr />
+    </div>
+</div>
+<div class="card-deck">
+
+
+
+    @foreach(var user in Model.users) {
+
+        if(user.Id != userManager.GetUserId(User)) {
+            var photoPath = "~/images/UserProfileImage/" + ( user.Photo ?? "ProfileImage.jpg" );
+        <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+            <div class="card-header">
+                <h3>@user.FName @user.LName</h3>
+            </div>
+
+            <img class="card-img-top imageThumbnail" src="@photoPath"
+                 asp-append-version="true" style="height:200px;width:auto" />
+
+            <div class="card-footer text-center">
+                <a asp-controller="Users" asp-action="Profile" asp-route-id="@user.Id"
+                   class="btn btn-primary m-1">Profile</a>
+                <a asp-controller="Users" asp-action="edit" asp-route-id="@user.Id"
+                   class="btn btn-info m-1">Add Frind</a>
+                <a href="#" class="btn btn-danger m-1">Block</a>
+            </div>
+        </div>
+        }
+    }
+</div>
+
+@*<div class="row">
+        <br />
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <form method="get">
+                        <div class="form-group">
+                            <strong>Find by Name or Username:</strong>
+                            <input type="text" name="SearchTerm" value="@ViewData["SearchTerm"]" class="form-control" />
+                            <br />
+                            <div>
+                                <button type="submit" class="btn btn-primary">Search</button> |
+                                <a asp-action="Search">Back to Full List</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr />
+
+            @foreach(var user in Model.users) {
+
+                <div class="well">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <img src="~/images/UserProfileImage/@user.Photo" class="img-circle pull-left" height="55" width="55" alt="Avatar">
+                        </div>
+                        <div class="col-sm-6 text-left">
+                            <div class="row">
+                                <a asp-controller="Users" asp-action="AccountDetails" asp-route-id="@user.Id"><strong>@user.FName @user.LName</strong></a>
+                            </div>
+                            <div class="row">
+                                Age: @user.BrithDate
+                            </div>
+                        </div>
+                        <div class="col-sm-4 text-left">
+                            <div class="row">
+                                Number of Posts: @user.Posts.Count()
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+
+            <div class="well">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <h2>There are no user corresponding to your search!</h2>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>*@
+

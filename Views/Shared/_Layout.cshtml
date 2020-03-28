@@ -1,5 +1,6 @@
-﻿
+﻿@inject UserManager<ApplicationUser> userManager
 @inject SignInManager<ApplicationUser> SignInManager
+@{ApplicationUser applicationUser = await userManager.GetUserAsync(User);}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,8 +30,7 @@
             </a>
             <ul class="navbar-nav">
 
-                @if (SignInManager.IsSignedIn(User))
-                {
+                @if(SignInManager.IsSignedIn(User)) {
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,20 +56,23 @@
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav ml-auto">
                     @*If the user is signed-in display Logout link*@
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <li class="nav-item">
-                            <form method="post" asp-controller="account" asp-action="logout">
-                                <a href="/profile">profile</a>
-                                <button type="submit" style="width:auto"
-                                        class="nav-link btn btn-link py-0">
-                                    Logout @User.Identity.Name
-                                </button>
-                            </form>
-                        </li>
-                    }
-                    else
-                    {
+                    @if(SignInManager.IsSignedIn(User)) {
+
+                        <ul class="nav navbar-nav navbar-right">
+
+                            <li><a asp-area="" asp-controller="Users" asp-action="Index"> Search    </a></li>
+                            <li><a asp-area="" asp-controller="profile" asp-action="Index"><span class="glyphicon glyphicon-user"></span>  profile </a></li>
+                            <li class="nav-item">
+                                <form method="post" asp-controller="account" asp-action="logout">
+                                    @*<a href="/profile">profile</a>*@
+                                    <button type="submit" style="width:auto"
+                                            class="nav-link btn btn-link py-0">
+                                        Logout @applicationUser.FName.
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    } else {
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="account" asp-action="register">
                                 Register
