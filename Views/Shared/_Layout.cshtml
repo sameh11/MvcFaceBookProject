@@ -30,6 +30,7 @@
             </a>
             <ul class="navbar-nav">
 
+
                 @if(SignInManager.IsSignedIn(User)) {
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
@@ -42,11 +43,17 @@
                                asp-action="ChangePassword">
                                 Password
                             </a>
-                            <a class="dropdown-item" asp-controller="Account"
-                               asp-action="ChangePassword">
-                                Email
-                            </a>
+                            <br />
+                            @if(true@*User.IsInRole("Admin")*@) {
+
+<a class="dropdown-item" asp-controller="Administration"
+   asp-action="ListUsers"> Users</a>
+<a class="dropdown-item" asp-controller="Administration"
+   asp-action="ListRoles"> Roles</a>
+
+}
                         </div>
+
                     </li>
                 }
             </ul>
@@ -93,12 +100,14 @@
             @RenderBody()
         </main>
     </div>
-
+    <br />
+    <br />
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2020 - Facebook - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

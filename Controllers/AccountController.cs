@@ -21,7 +21,8 @@ namespace Facebook.Controllers
 
 
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) {
+        public AccountController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) {
+            RoleManager = roleManager;
             this.userManager = userManager;
             this.signInManager = signInManager;
            
@@ -144,16 +145,19 @@ namespace Facebook.Controllers
 
 
 
-                ///EmailConfirmed
+             
                 var user = await userManager.FindByEmailAsync(model.Email);
                 ///EmailConfirmed
-                if(user != null && !user.EmailConfirmed &&
-                            ( await userManager.CheckPasswordAsync(user, model.Password) )) {
-                    ModelState.AddModelError(string.Empty, "Email not confirmed yet");
-                    return View(model);
-                }
+                //if(user != null && !user.EmailConfirmed &&
+                //            ( await userManager.CheckPasswordAsync(user, model.Password) )) {
+                //    ModelState.AddModelError(string.Empty, "Email not confirmed yet");
+                //    return View(model);
+                //}
 
 
+
+               // var user = await userManager.FindByEmailAsync(model.Email);
+            //    await userManager.AddToRoleAsync(user, "Admin");
 
 
                 var result = await signInManager.PasswordSignInAsync(model.Email,
@@ -218,25 +222,37 @@ namespace Facebook.Controllers
                  new { userId = user.Id, token = token }, Request.Scheme);
 
                    SendEmail("ConfirmEmail", confirmationLink, user.Email, $"{user.FName} {user.LName}");
-                //    logger.Log(LogLevel.Warning, confirmationLink);
+                    //    logger.Log(LogLevel.Warning, confirmationLink);
 
 
+
+                    // Saves the role in the underlying AspNetRoles table
+                    if(!await RoleManager.RoleExistsAsync("Admin"))
+                        await RoleManager.CreateAsync(new IdentityRole { Name = "Admin" });
+                    
+              
+
+                    // var user = await userManager.FindByEmailAsync(model.Email);
+                    await userManager.AddToRoleAsync(user, "Admin");
+
+                    await userManager.AddClaimsAsync(user,
+            ClaimsStore.AllClaims.Where(a=>a.Type!=""));
 
 
                     // If the user is signed in and in the Admin role, then it is
                     // the Admin user that is creating a new user. So redirect the
                     // Admin user to ListRoles action
-                    if(signInManager.IsSignedIn(User) && User.IsInRole("Admin")) {
-                        return RedirectToAction("ListUsers", "Administration");
-                    }
+                    //if(signInManager.IsSignedIn(User) && User.IsInRole("Admin")) {
+                    //    return RedirectToAction("ListUsers", "Administration");
+                    //}
 
                     ///abd0
                     ///email confirmation
-                    ViewBag.ErrorTitle = "Registration successful";
-                    ViewBag.ErrorMessage = "Before you can Login, please confirm your " +
-                            "email, by clicking on the confirmation link we have emailed you";
-                    return View("Error");
-                 
+                    //ViewBag.ErrorTitle = "Registration successful";
+                    //ViewBag.ErrorMessage = "Before you can Login, please confirm your " +
+                    //        "email, by clicking on the confirmation link we have emailed you";
+                    //return View("Error");
+
 
 
                     await signInManager.SignInAsync(user, isPersistent: false);
@@ -442,7 +458,7 @@ namespace Facebook.Controllers
 
         const string fromPassword = "5478963210";
 
-
+        public RoleManager<IdentityRole> RoleManager { get; }
 
         [HttpGet]
         [AllowAnonymous]
