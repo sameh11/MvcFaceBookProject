@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Facebook.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200330173342_frindsRelation")]
-    partial class frindsRelation
+    [Migration("20200330173342_FriendsRelation")]
+    partial class FriendsRelation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -23,6 +23,7 @@ namespace Facebook.Models
         public DbSet<Post> Posts { get; set; }
 
         public DbSet<FriendRequest> FriendRequests { get; set; }
+        public DbSet<Friends> Friends { get; set; }
 
         public DbSet<Replay> Replays { get; set; }
 

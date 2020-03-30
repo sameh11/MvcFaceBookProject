@@ -7,8 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200330173251_frinds.cs" />
-    <Compile Remove="Migrations\20200330173251_frinds.Designer.cs" />
+    <Compile Remove="Migrations\20200330173251_Friends.cs" />
+    <Compile Remove="Migrations\20200330173251_Friends.Designer.cs" />
+    <Compile Remove="Migrations\20200330182932_FriendsRelationaa.cs" />
+    <Compile Remove="Migrations\20200330182932_FriendsRelationaa.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

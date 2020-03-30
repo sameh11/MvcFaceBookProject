@@ -35,9 +35,9 @@ namespace Facebook.Controllers
             var u = await userManager.GetUserAsync(User);
             AddNewPost addNewPost = new AddNewPost();
             addNewPost.mylist = _context.Posts.OrderByDescending(a=>a.Date).Where( a =>a.user==u).ToList();
-            addNewPost.user = u;
-
-            addNewPost.friendRequests = _context.FriendRequests.Where(a => a.Recive == u).Select(a => a.Send).ToList();
+            addNewPost.user =u;
+            addNewPost.friends = _context.Friends.Where(a => a.User1 == u).Select(a => a.User2).ToList();
+            addNewPost.friendRequests = _context.FriendRequests.Where(a => a.Recive == u && a.requestState==RequestState.Pending).Select(a => a.Send).ToList();
             foreach (var item in addNewPost.mylist)
                     item.user = await userManager.GetUserAsync(User);
             return View(addNewPost);

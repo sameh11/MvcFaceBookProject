@@ -117,14 +117,19 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-6">
+                    @if(Model.friendRequests?.Count() != 0) {
+                        <h1>friendRequests (@Model.friendRequests?.Count())</h1>
+                    }
                     @foreach(var item in Model.friendRequests) {
-                          var photoPath = "~/images/UserProfileImage/" + ( item.Photo ?? "ProfileImage.jpg" );
-            
-                        <div class="card " >
+
+
+                        var photoPath = "~/images/UserProfileImage/" + ( item.Photo ?? "ProfileImage.jpg" );
+
+                        <div class="card ">
                             <span class="card-header">
                                 <img src="@photoPath"
                                      asp-append-version="true" style="height:30px;width:30px" />
-                                <h5>@item.FName @item.LName</h5>
+                                <a asp-controller="Users" asp-action="Profile" asp-route-id="@item.Id"><h5>@item.FName @item.LName</h5></a>
                                 <a asp-controller="Users" asp-action="Accept" asp-route-id="@item.Id"
                                    class="btn btn-primary m-1">Accept</a>
 
@@ -133,7 +138,31 @@
 
                             </span>
                             <div class="card-footer text-center">
-        
+
+                            </div>
+                        </div>
+                    }
+
+                    <hr />
+
+                    <h1>Friends (@Model.friends?.Count())</h1>
+                    @foreach(var Friend in Model?.friends) {
+
+
+                        var photoPath = "~/images/UserProfileImage/" + ( Friend.Photo ?? "ProfileImage.jpg" );
+
+                        <div class="card ">
+
+                            <span class="card-header">
+                                <img src="@photoPath"
+                                     asp-append-version="true" style="height:30px;width:30px" />
+                                <a asp-controller="Users" asp-action="Profile" asp-route-id="@Friend.Id"><h5>@Friend.FName @Friend.LName</h5></a>
+
+                                <a asp-controller="Users" asp-action="UnFriend" asp-route-id="@Friend.Id"
+                                   class="btn btn-danger  m-1">UnFriend</a>
+                            </span>
+                            <div class="card-footer text-center">
+
                             </div>
                         </div>
                     }
@@ -142,11 +171,13 @@
 
 
                 </div>
+
+
+
+
                 <div class="col-6">
-                    @foreach (var item in Model.mylist)
-                    {
-                        if (item.IsDeleted == false)
-                        {
+                    @foreach(var item in Model.mylist) {
+                        if(item.IsDeleted == false) {
                             var photoPath = "~/images/" + item.Photo;
                             var photoPorfile = "~/images/UserProfileImage/" + item.user.Photo;
                             <form enctype="multipart/form-data" method="post"
@@ -155,15 +186,12 @@
                                 <div class="card border-success mb-3 " style="max-width: 30rem;">
                                     <div class="card-header bg-transparent border-success">
                                         @{
-                                            if (photoPorfile != null)
-                                            {
+                                            if(photoPorfile != null) {
                                                 <img src="@photoPorfile" asp-append-version="true"
                                                      class="rounded-circle"
                                                      height="50" width="50"
                                                      data-holder-rendered="true" />
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 <img src="~/images/UserProfileImage/ProfileImage.jpg"
                                                      class="rounded-circle"
                                                      height="50" width="50"
@@ -196,8 +224,7 @@
                                     </div>
                                     <div class="card-body text-success">
                                         <label> @Html.DisplayFor(modelItem => item.feel)</label>
-                                        @if (item.Photo != null)
-                                        {
+                                        @if(item.Photo != null) {
                                             <img src="@photoPath" asp-append-version="true"
                                                  class="d-block" height="150" width="200" />
                                         }
@@ -221,6 +248,9 @@
                 </div>
             </div>
         </div>
+
+
+
     </div>
         @section Scripts {
             <script>

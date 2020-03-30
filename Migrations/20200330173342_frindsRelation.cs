@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Facebook.Migrations
 {
-    public partial class frindsRelation : Migration
+    public partial class FriendsRelation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -47,6 +47,8 @@ namespace Facebook.Controllers
             } else
                 svm.users = context.Users.Where(u => u.IsDeleted == false).ToList();
             svm.FriendRequestsSent = context.FriendRequests.Where(a => a.IdSend ==SenderUser.Id).ToList();
+            svm.Friends = context.Friends.Where(a => a.User1 == SenderUser).Select(u=>u.User2).ToList();
+            svm.FriendRequestsReciev = context.FriendRequests.Where(a => a.Recive == SenderUser).ToList();
 
 
             return View(svm);
@@ -64,9 +66,104 @@ namespace Facebook.Controllers
             return View(addNewPost);
             
         }
+        public async Task<IActionResult> Cancel(string id) {
+
+            var ReciverUser = await UserManager.GetUserAsync(User);
+            var SenderUser = context.Users.Where(u => u.Id == id).FirstOrDefault();
+            if(SenderUser == null || ReciverUser == null) {
+                return View("Error");
+            }
+        
+
+            var entity = context.FriendRequests.FirstOrDefault(s => s.Send == SenderUser && s.Recive == ReciverUser);
+
+            if(entity != null) {
+
+             
+                context.FriendRequests.Remove(entity);
+                await context.SaveChangesAsync();
+            }
+           
 
 
-        public async Task< IActionResult> AddFrind(string id) {
+            return RedirectToAction("Index", "Profile");
+
+        }
+
+        public async Task<IActionResult> remove(string id) {
+
+            var SenderUser = await UserManager.GetUserAsync(User);
+            var ReciverUser = context.Users.Where(u => u.Id == id).FirstOrDefault();
+            if(SenderUser == null || ReciverUser == null) {
+                return View("Error");
+            }
+
+
+            var entity = context.FriendRequests.FirstOrDefault(s => s.Send == SenderUser && s.Recive == ReciverUser);
+
+            if(entity != null) {
+
+
+                context.FriendRequests.Remove(entity);
+                await context.SaveChangesAsync();
+            }
+
+
+
+            return RedirectToAction("Index", "Profile");
+
+        }
+
+        public async Task<IActionResult> Accept(string id) {
+
+            var ReciverUser = await UserManager.GetUserAsync(User);
+            var SenderUser = context.Users.Where(u => u.Id == id).FirstOrDefault();
+            if(SenderUser == null || ReciverUser == null) {
+                return View("Error");
+            }
+            //FriendRequest af = new FriendRequest() {
+            //    IdRecive = ReciverUser.Id,
+            //    IdSend = SenderUser.Id,
+            //    Recive = ReciverUser,
+            //    Send = SenderUser,
+            //    requestState = RequestState.Pending,
+            //};
+            //context.FriendRequests.Add(af);
+
+            Friends friends = new Friends() {
+                User1 = SenderUser,
+                User2 = ReciverUser,
+                User1Id = SenderUser.Id,
+                User2Id = ReciverUser.Id,
+                FriendshipStart = DateTime.Now
+            };
+
+            Friends friends2 = new Friends() {
+                User2 = SenderUser,
+                User1 = ReciverUser,
+                User2Id = SenderUser.Id,
+                User1Id = ReciverUser.Id,
+                FriendshipStart = DateTime.Now
+            };
+            context.Friends.Add(friends);
+            context.Friends.Add(friends2);
+
+         var entity = context.FriendRequests.FirstOrDefault(s => s.Send == SenderUser && s.Recive == ReciverUser);
+
+            if(entity != null) {
+
+                entity.requestState = RequestState.Accept;
+
+                context.FriendRequests.Update(entity);
+            }
+            await context.SaveChangesAsync();
+
+
+            return RedirectToAction("Index", "Profile");
+
+        }
+
+        public async Task< IActionResult> AddFriend(string id) {
 
             var SenderUser = await UserManager.GetUserAsync(User);
             var ReciverUser =  context.Users.Where(u=>u.Id==id).FirstOrDefault();
@@ -85,6 +182,34 @@ namespace Facebook.Controllers
 
            
             return RedirectToAction("Index");
+
+        }
+        public async Task<IActionResult> UnFriend(string id) {
+
+            var ReciverUser = await UserManager.GetUserAsync(User);
+            var SenderUser = context.Users.Where(u => u.Id == id).FirstOrDefault();
+            if(SenderUser == null || ReciverUser == null) {
+                return View("Error");
+            }
+        
+
+            var fr1 = context.Friends.FirstOrDefault(a => a.User1 == SenderUser && a.User2 == ReciverUser);
+            if(fr1 != null) context.Friends.Remove(fr1);
+
+             fr1 = context.Friends.FirstOrDefault(a => a.User2 == SenderUser && a.User1 == ReciverUser);
+            if(fr1 != null) context.Friends.Remove(fr1);
+       
+
+            var entity = context.FriendRequests.FirstOrDefault(s => (s.Send == SenderUser && s.Recive == ReciverUser));
+            if(entity != null) context.FriendRequests.Remove(entity);
+             entity = context.FriendRequests.FirstOrDefault(s => ( s.Recive == SenderUser && s.Send == ReciverUser ));
+            if(entity != null) context.FriendRequests.Remove(entity);
+
+
+            await context.SaveChangesAsync();
+
+
+            return RedirectToAction("Index", "Profile");
 
         }
 

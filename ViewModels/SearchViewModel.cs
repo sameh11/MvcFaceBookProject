@@ -10,6 +10,8 @@ namespace Facebook.ViewModels
     {
         public List<ApplicationUser> users;
         public List<FriendRequest> FriendRequestsSent;
+        public List<FriendRequest> FriendRequestsReciev;
+        public List<ApplicationUser> Friends;
         public int count;
     }
 }

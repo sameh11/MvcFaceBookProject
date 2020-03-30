@@ -47,17 +47,31 @@
                     <a asp-controller="Users" asp-action="Profile" asp-route-id="@user.Id"
                        class="btn btn-primary m-1">Profile</a>
                     @{
-                        var frind = Model.FriendRequestsSent.Where(a => a.IdRecive == user.Id).FirstOrDefault();
+                        var Friendpenn = Model.FriendRequestsSent.Where(a => a.IdRecive == user.Id && a.requestState == RequestState.Pending).FirstOrDefault();
+                        var FriendaccebtOrcancle = Model.FriendRequestsReciev.Where(a => a.IdSend == user.Id && a.requestState == RequestState.Pending).FirstOrDefault();
+                        var FriendaunFriend = Model.Friends.Where(a => a.Id == user.Id).FirstOrDefault();
 
-                        if(Model.FriendRequestsSent == null || frind == null) {
-                            <a asp-controller="Users" asp-action="AddFrind" asp-route-id="@user.Id"
-                               class="btn btn-info m-1">Add Frind</a>
 
-                        } else if(frind.requestState == RequestState.Pending) {
-                            <a  asp-controller="Users" asp-action="AddFrind" asp-route-id="@user.Id"
-                               class="btn btn-info disabled m-1">Pending.</a>
+                        if(Friendpenn != null) {
+                            <a asp-controller="Users" asp-action="remove" asp-route-id="@user.Id"
+                               class="btn btn-dark  m-1">Remove Re</a>
 
+                        } else if(FriendaccebtOrcancle != null) {
+
+                            <a asp-controller="Users" asp-action="Accept" asp-route-id="@user.Id"
+                               class="btn btn-success  m-1">Accept</a>
+
+                        } else if(FriendaunFriend != null) {
+
+                            <a asp-controller="Users" asp-action="UnFriend" asp-route-id="@user.Id"
+                               class="btn btn-danger  m-1">UnFriend</a>
+                        } else {
+
+                            <a asp-controller="Users" asp-action="AddFriend" asp-route-id="@user.Id"
+                               class="btn btn-info m-1">Add Friend</a>
                         }
+
+                   
                     }
 
 

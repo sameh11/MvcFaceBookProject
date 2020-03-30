@@ -23,7 +23,7 @@ namespace Facebook.ViewModels
         public IEnumerable<Post> mylist { get; set; }
 
         public IEnumerable<ApplicationUser> friendRequests { get; set; }
-
+        public IEnumerable<ApplicationUser> friends { get; set; }
 
     }
 }
