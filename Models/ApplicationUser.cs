@@ -30,6 +30,6 @@ namespace Facebook.Models
         public virtual IEnumerable<FriendRequest> RequestFriendRecives { get; set; }//done
         public virtual IEnumerable<FriendRequest> FriendRequests { get; set; }//done
 
-        public virtual IEnumerable<ApplicationUser> MyFriends { get; set; }//done
+        public virtual IEnumerable<Friends> MyFriends { get; set; }//done
     }
 }

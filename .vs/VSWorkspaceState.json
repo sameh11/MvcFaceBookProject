@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
+    "\\Controllers",
     "\\wwwroot"
   ],
-  "SelectedNode": "\\Facebook.sln",
+  "SelectedNode": "\\Controllers\\ProfileController.cs",
   "PreviewInSolutionExplorer": false
 }

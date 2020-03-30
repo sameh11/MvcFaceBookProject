@@ -22,6 +22,8 @@ namespace Facebook.ViewModels
         private PostRepository Posts { get; set; }
         public IEnumerable<Post> mylist { get; set; }
 
+        public IEnumerable<ApplicationUser> friendRequests { get; set; }
+
 
     }
 }

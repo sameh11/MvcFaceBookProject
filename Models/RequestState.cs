@@ -7,7 +7,8 @@ namespace Facebook.Models
 {
     public enum RequestState
     {
-        accept,
-        notAccept
+        Pending,
+        Accept,
+        NotAccept
     }
 }

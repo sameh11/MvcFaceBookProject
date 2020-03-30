@@ -9,7 +9,7 @@ namespace Facebook.ViewModels
     public class SearchViewModel
     {
         public List<ApplicationUser> users;
-
+        public List<FriendRequest> FriendRequestsSent;
         public int count;
     }
 }

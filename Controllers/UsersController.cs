@@ -35,35 +35,24 @@ namespace Facebook.Controllers
         //    return View(svm);
         //}
         [HttpGet]
-
-        public IActionResult Index(string searchTerm) {
-
+        public async Task< IActionResult> Index(string searchTerm) {
+            var SenderUser = await UserManager.GetUserAsync(User);
             SearchViewModel svm = new SearchViewModel();
             if(!string.IsNullOrEmpty(searchTerm??"")) {
                 svm.users = this.context.Users
           .Where(u => u.IsDeleted == false && ( u.FName.ToLower().Contains(searchTerm.ToLower())
           || u.LName.ToLower().Contains(searchTerm.ToLower())
-          || u.UserName.ToLower().Contains(searchTerm.ToLower()) )).Include(b => b.Posts).ToList();
+          || u.UserName.ToLower().Contains(searchTerm.ToLower()) )).Include(b => b.Posts).Include(f=>f.FriendRequests).ToList();
 
             } else
-                svm.users = context.Users.Where(u => u.IsDeleted == false).Include(b => b.Posts).ToList();
+                svm.users = context.Users.Where(u => u.IsDeleted == false).ToList();
+            svm.FriendRequestsSent = context.FriendRequests.Where(a => a.IdSend ==SenderUser.Id).ToList();
+
+
             return View(svm);
         }
 
-        //public IActionResult AccountDetails(string id, int? page) {
-        //    //could be optimized
-        //    if(User.GetUserId() == id) {
-        //        ViewData[GlobalConstants.Authorization] = GlobalConstants.FullAuthorization;
-        //    } else if(this.userService.CheckIfFriends(User.GetUserId(), id)) {
-        //        ViewData[GlobalConstants.Authorization] = GlobalConstants.FriendAuthorization;
-        //    } else {
-        //        ViewData[GlobalConstants.Authorization] = GlobalConstants.NoAuthorization;
-        //    }
-
-        //    UserAccountModel user = this.userService.UserDetails(id, page ?? 1, PageSize);
-
-        //    return this.ViewOrNotFound(user);
-        //}
+    
         public IActionResult Profile(string id) {
 
             
@@ -74,6 +63,29 @@ namespace Facebook.Controllers
                 item.user = addNewPost.user;
             return View(addNewPost);
             
+        }
+
+
+        public async Task< IActionResult> AddFrind(string id) {
+
+            var SenderUser = await UserManager.GetUserAsync(User);
+            var ReciverUser =  context.Users.Where(u=>u.Id==id).FirstOrDefault();
+            if(SenderUser==null ||ReciverUser ==null) {
+                return View("Error");
+            }
+            FriendRequest af = new FriendRequest() {
+                IdRecive = ReciverUser.Id,
+                IdSend= SenderUser.Id,
+                Recive=ReciverUser,
+                Send=SenderUser,
+                requestState=RequestState.Pending,
+            };
+            context.FriendRequests.Add(af);
+            await context.SaveChangesAsync();
+
+           
+            return RedirectToAction("Index");
+
         }
 
         public IActionResult Search(string searchTerm, int? page) {

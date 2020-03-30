@@ -1,5 +1,6 @@
 ﻿@model SearchViewModel
 @inject UserManager<ApplicationUser> userManager
+@{string UserID = userManager.GetUserId(User); }
 <div class="row">
     <br />
     <div class="col-sm-6 col-sm-offset-3">
@@ -8,14 +9,14 @@
                 <form method="get">
                     <div class="form-group">
                         <strong>Find by Name or Username:</strong>
-                     
-                        
-                     
+
+
+
                         <input type="text" name="SearchTerm" class="form-control" />
                         <br />
                         <div>
                             @*<a asp-controller="Users" asp-action="Index" asp-route-SearchTerm="@user.Id"
-                               class="btn btn-primary m-1">Search</a>*@
+                                class="btn btn-primary m-1">Search</a>*@
                             <button type="submit" class="btn btn-primary">Search</button> |
                             <a asp-controller="Users">Back to Full List</a>
                         </div>
@@ -32,24 +33,37 @@
 
     @foreach(var user in Model.users) {
 
-        if(user.Id != userManager.GetUserId(User)) {
+        if(user.Id != UserID) {
             var photoPath = "~/images/UserProfileImage/" + ( user.Photo ?? "ProfileImage.jpg" );
-        <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
-            <div class="card-header">
-                <h3>@user.FName @user.LName</h3>
-            </div>
+            <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+                <div class="card-header">
+                    <h3>@user.FName @user.LName</h3>
+                </div>
 
-            <img class="card-img-top imageThumbnail" src="@photoPath"
-                 asp-append-version="true" style="height:200px;width:auto" />
+                <img class="card-img-top imageThumbnail" src="@photoPath"
+                     asp-append-version="true" style="height:200px;width:auto" />
 
-            <div class="card-footer text-center">
-                <a asp-controller="Users" asp-action="Profile" asp-route-id="@user.Id"
-                   class="btn btn-primary m-1">Profile</a>
-                <a asp-controller="Users" asp-action="edit" asp-route-id="@user.Id"
-                   class="btn btn-info m-1">Add Frind</a>
-                <a href="#" class="btn btn-danger m-1">Block</a>
+                <div class="card-footer text-center">
+                    <a asp-controller="Users" asp-action="Profile" asp-route-id="@user.Id"
+                       class="btn btn-primary m-1">Profile</a>
+                    @{
+                        var frind = Model.FriendRequestsSent.Where(a => a.IdRecive == user.Id).FirstOrDefault();
+
+                        if(Model.FriendRequestsSent == null || frind == null) {
+                            <a asp-controller="Users" asp-action="AddFrind" asp-route-id="@user.Id"
+                               class="btn btn-info m-1">Add Frind</a>
+
+                        } else if(frind.requestState == RequestState.Pending) {
+                            <a  asp-controller="Users" asp-action="AddFrind" asp-route-id="@user.Id"
+                               class="btn btn-info disabled m-1">Pending.</a>
+
+                        }
+                    }
+
+
+                    <a href="#" class="btn btn-danger m-1">Block</a>
+                </div>
             </div>
-        </div>
         }
     }
 </div>

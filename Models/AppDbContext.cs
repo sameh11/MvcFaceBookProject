@@ -42,6 +42,26 @@ namespace Facebook.Models
                .HasOne(c => c.Send)
                .WithMany(p => p.FriendRequests)
                .HasForeignKey(pc => pc.IdSend);
+
+
+
+
+            modelBuilder.Entity<Friends>()
+           .HasKey(uc => new { uc.User1Id, uc.User2Id });
+
+            modelBuilder.Entity<Friends>()
+               .HasOne(c => c.User1)
+               .WithMany() // <-- one of this must be empty
+               .HasForeignKey(pc => pc.User1Id)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Friends>()
+               .HasOne(c => c.User2)
+               .WithMany(p => p.MyFriends)
+               .HasForeignKey(pc => pc.User2Id);
+
+
+          
         }
 
     }
