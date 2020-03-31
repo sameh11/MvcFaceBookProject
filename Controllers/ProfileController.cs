@@ -34,7 +34,7 @@ namespace Facebook.Controllers
         {
             var u = await userManager.GetUserAsync(User);
             AddNewPost addNewPost = new AddNewPost();
-            addNewPost.mylist = _context.Posts.OrderByDescending(a=>a.Date).Where( a =>a.user==u).ToList();
+            addNewPost.mylist = _context.Posts.OrderByDescending(a=>a.Date).Where( a =>a.user==u).Include(a=>a.Likeslist).ToList();
             addNewPost.user =u;
             addNewPost.friends = _context.Friends.Where(a => a.User1 == u).Select(a => a.User2).ToList();
             addNewPost.friendRequests = _context.FriendRequests.Where(a => a.Recive == u && a.requestState==RequestState.Pending).Select(a => a.Send).ToList();
@@ -54,6 +54,45 @@ namespace Facebook.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> Like(int id) {
+
+            var user = await userManager.GetUserAsync(User);
+            var post = _context.Posts.FirstOrDefault(a => a.Id == id);
+
+            if(user == null || post == null) {
+                return View("Error");
+            }
+
+            var like_before = _context.Likes.FirstOrDefault(q => q.Post == post && q.Users == user);
+            if(like_before != null) {
+
+                _context.Likes.Remove(like_before);
+                post.Likes = post.Likes - 1;
+                _context.Posts.Update(post);
+            }else {
+
+                like_before = new Like() {
+                    Date = DateTime.Now,
+                    IsDeleted = false,
+                    Post = post,
+                    Users = user,
+                    Type = React.like
+                    
+                };
+                post.Likes = post.Likes + 1;
+                _context.Likes.Add(like_before);
+                _context.Posts.Update(post);
+            }
+             await _context.SaveChangesAsync();
+
+
+
+            return RedirectToAction("Index", "Profile");
+
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> MakeNewPost(AddNewPost post)

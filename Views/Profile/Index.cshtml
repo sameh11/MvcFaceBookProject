@@ -1,267 +1,272 @@
 ﻿@model Facebook.ViewModels.AddNewPost
-
-
+@inject UserManager<ApplicationUser> userManager
+@{string UserID = userManager.GetUserId(User); }
 @{
     ViewData["Title"] = "Index";
 }
 
-    <div>
-        <div id="modalDiv"></div>
-        <div id="modalDivEditInfo"></div>
-        @{
-            var user = Model.mylist.FirstOrDefault();
+<div>
+    <div id="modalDiv"></div>
+    <div id="modalDivEditInfo"></div>
+    @{
+        var user = Model.mylist.FirstOrDefault();
 
-            <img src="~/images/UserProfileImage/FacenookBackground.jpg"
-                 class="m-4 col-12" height="400"
-                 asp-append-version="true" />
-            <div class="position-sticky">
-                @if (Model.user != null)
-                {
-                    var myphotoPorfile = "~/images/UserProfileImage/" + Model.user.Photo;
-                    <img src="@myphotoPorfile" asp-append-version="true"
-                         class="rounded-circle" style=" transform: translate(-50%,-50%);"
-                         data-holder-rendered="true"
-                         height="200" width="250" />
+        <img src="~/images/UserProfileImage/FacenookBackground.jpg"
+             class="m-4 col-12" height="400"
+             asp-append-version="true" />
+        <div class="position-sticky">
+            @if(Model.user != null) {
+                var myphotoPorfile = "~/images/UserProfileImage/" + Model.user.Photo;
+                <img src="@myphotoPorfile" asp-append-version="true"
+                     class="rounded-circle" style=" transform: translate(-50%,-50%);"
+                     data-holder-rendered="true"
+                     height="200" width="250" />
 
 
-                }
-                else
-                {
-                    <img src="~/images/UserProfileImage/ProfileImage.jpg"
-                         class="rounded-circle"
-                         height="200" width="250"
-                         data-holder-rendered="true"
-                         asp-append-version="true"
-                         style=" transform: translate(10%,-50%);" />
-                }
-                <div>
-                    <div class="custom-file">
-                        <form method="POST" asp-controller="Profile"
-                              asp-action="ChangePhoto"
-                              enctype="multipart/form-data">
-                            <input asp-for="Photo" class="form-control custom-file-input">
-                            <label class="custom-file-label" style="max-width: 10rem;">Updata Photo</label>
-                            <input type="submit" value="post" />
-                        </form>
-                    </div>
-
-                    <label class="display-4 text-dark">@Model.user.FName @Model.user.LName</label>
-                </div>
-            </div>
-        }
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-6">
-                    <form>
-                        <div class="form-group row">
-                            <label asp-for="@Model.user.FName" for="Fname" class="col-sm-2 col-form-label">Fname</label>
-                            <div class="col-sm-10">
-                                <input asp-for="@Model.user.FName" type="text" readonly class="form-control" id="Fname">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="@Model.user.LName" for="LName" class="col-sm-2 col-form-label">LName</label>
-                            <div class="col-sm-10">
-                                <input asp-for="@Model.user.LName" type="text" readonly class="form-control" id="LName" placeholder="LName">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="@Model.user.Bio" for="Bio" class="col-sm-2 col-form-label">Bio</label>
-                            <div class="col-sm-10">
-                                <input asp-for="@Model.user.Bio" type="text" readonly class="form-control" id="Bio" placeholder="Bio">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="@Model.user.BrithDate" for="BrithDate" class="col-sm-2 col-form-label">BrithDate</label>
-                            <div class="col-sm-10">
-                                <input asp-for="@Model.user.BrithDate" type="datetime" readonly class="form-control" id="BrithDate" placeholder="BrithDate">
-                            </div>
-                        </div>
-                        <a asp-controller="Profile" asp-action="EditUserInfo" 
-                           asp-route-id="@Model.user.Id"data-ajax="true" 
-                           data-ajax-update="#modalDivEditInfo"
-                           data-ajax-mode="replace" data-ajax-method="Get"
-                           data-ajax-success="showEditProfileUserInfo()">Edit user Info</a>
-                    </form>
-                </div>
-                <div class="card border-success mb-3 mt-1 col-6" style="max-width: 30rem;">
-                    <form enctype="multipart/form-data" method="post"
-                          asp-controller="Profile" asp-action="MakeNewPost">
-
-                        <div>
-                            <select asp-for="Feel">
-                                <option value="100">Select any feeling</option>
-                                <option value="0">intersted &#129321;</option>
-                                <option value="1">happy &#128515;</option>
-                                <option value="2">sad &#128532;</option>
-                            </select>
-                        </div>
-                        <div class="card-body text-success">
-                            <textarea asp-for="Text" placeholder="What's in your mind"></textarea>
-                            <div class="custom-file">
-                                <input asp-for="Photo" class="form-control custom-file-input">
-                                <label class="custom-file-label">Choose File...</label>
-                            </div>
-                        </div>
-                        <div class="card-footer bg-transparent border-success">
-                            <input type="submit" value="post" />
-                        </div>
-
+            } else {
+                <img src="~/images/UserProfileImage/ProfileImage.jpg"
+                     class="rounded-circle"
+                     height="200" width="250"
+                     data-holder-rendered="true"
+                     asp-append-version="true"
+                     style=" transform: translate(10%,-50%);" />
+            }
+            <div>
+                <div class="custom-file">
+                    <form method="POST" asp-controller="Profile"
+                          asp-action="ChangePhoto"
+                          enctype="multipart/form-data">
+                        <input asp-for="Photo" class="form-control custom-file-input">
+                        <label class="custom-file-label" style="max-width: 10rem;">Updata Photo</label>
+                        <input type="submit" value="post" />
                     </form>
                 </div>
 
-
+                <label class="display-4 text-dark">@Model.user.FName @Model.user.LName</label>
             </div>
         </div>
-
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-6">
-                    @if(Model.friendRequests?.Count() != 0) {
-                        <h1>friendRequests (@Model.friendRequests?.Count())</h1>
-                    }
-                    @foreach(var item in Model.friendRequests) {
-
-
-                        var photoPath = "~/images/UserProfileImage/" + ( item.Photo ?? "ProfileImage.jpg" );
-
-                        <div class="card ">
-                            <span class="card-header">
-                                <img src="@photoPath"
-                                     asp-append-version="true" style="height:30px;width:30px" />
-                                <a asp-controller="Users" asp-action="Profile" asp-route-id="@item.Id"><h5>@item.FName @item.LName</h5></a>
-                                <a asp-controller="Users" asp-action="Accept" asp-route-id="@item.Id"
-                                   class="btn btn-primary m-1">Accept</a>
-
-                                <a asp-controller="Users" asp-action="Cancel" asp-route-id="@item.Id"
-                                   class="btn btn-danger m-1">Cancel</a>
-
-                            </span>
-                            <div class="card-footer text-center">
-
-                            </div>
+    }
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-6">
+                <form>
+                    <div class="form-group row">
+                        <label asp-for="@Model.user.FName" for="Fname" class="col-sm-2 col-form-label">Fname</label>
+                        <div class="col-sm-10">
+                            <input asp-for="@Model.user.FName" type="text" readonly class="form-control" id="Fname">
                         </div>
-                    }
-
-                    <hr />
-
-                    <h1>Friends (@Model.friends?.Count())</h1>
-                    @foreach(var Friend in Model?.friends) {
-
-
-                        var photoPath = "~/images/UserProfileImage/" + ( Friend.Photo ?? "ProfileImage.jpg" );
-
-                        <div class="card ">
-
-                            <span class="card-header">
-                                <img src="@photoPath"
-                                     asp-append-version="true" style="height:30px;width:30px" />
-                                <a asp-controller="Users" asp-action="Profile" asp-route-id="@Friend.Id"><h5>@Friend.FName @Friend.LName</h5></a>
-
-                                <a asp-controller="Users" asp-action="UnFriend" asp-route-id="@Friend.Id"
-                                   class="btn btn-danger  m-1">UnFriend</a>
-                            </span>
-                            <div class="card-footer text-center">
-
-                            </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="@Model.user.LName" for="LName" class="col-sm-2 col-form-label">LName</label>
+                        <div class="col-sm-10">
+                            <input asp-for="@Model.user.LName" type="text" readonly class="form-control" id="LName" placeholder="LName">
                         </div>
-                    }
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="@Model.user.Bio" for="Bio" class="col-sm-2 col-form-label">Bio</label>
+                        <div class="col-sm-10">
+                            <input asp-for="@Model.user.Bio" type="text" readonly class="form-control" id="Bio" placeholder="Bio">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="@Model.user.BrithDate" for="BrithDate" class="col-sm-2 col-form-label">BrithDate</label>
+                        <div class="col-sm-10">
+                            <input asp-for="@Model.user.BrithDate" type="datetime" readonly class="form-control" id="BrithDate" placeholder="BrithDate">
+                        </div>
+                    </div>
+                    <a asp-controller="Profile" asp-action="EditUserInfo"
+                       asp-route-id="@Model.user.Id" data-ajax="true"
+                       data-ajax-update="#modalDivEditInfo"
+                       data-ajax-mode="replace" data-ajax-method="Get"
+                       data-ajax-success="showEditProfileUserInfo()">Edit user Info</a>
+                </form>
+            </div>
+            <div class="card border-success mb-3 mt-1 col-6" style="max-width: 30rem;">
+                <form enctype="multipart/form-data" method="post"
+                      asp-controller="Profile" asp-action="MakeNewPost">
+
+                    <div>
+                        <select asp-for="Feel">
+                            <option value="100">Select any feeling</option>
+                            <option value="0">intersted &#129321;</option>
+                            <option value="1">happy &#128515;</option>
+                            <option value="2">sad &#128532;</option>
+                        </select>
+                    </div>
+                    <div class="card-body text-success">
+                        <textarea asp-for="Text" placeholder="What's in your mind"></textarea>
+                        <div class="custom-file">
+                            <input asp-for="Photo" class="form-control custom-file-input">
+                            <label class="custom-file-label">Choose File...</label>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-success">
+                        <input type="submit" value="post" />
+                    </div>
+
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-6">
+                @if(Model.friendRequests?.Count() != 0) {
+                    <h1>friendRequests (@Model.friendRequests?.Count())</h1>
+                }
+                @foreach(var item in Model.friendRequests) {
+
+
+                    var photoPath = "~/images/UserProfileImage/" + ( item.Photo ?? "ProfileImage.jpg" );
+
+                    <div class="card ">
+                        <span class="card-header">
+                            <img src="@photoPath"
+                                 asp-append-version="true" style="height:30px;width:30px" />
+                            <a asp-controller="Users" asp-action="Profile" asp-route-id="@item.Id"><h5>@item.FName @item.LName</h5></a>
+                            <a asp-controller="Users" asp-action="Accept" asp-route-id="@item.Id"
+                               class="btn btn-primary m-1">Accept</a>
+
+                            <a asp-controller="Users" asp-action="Cancel" asp-route-id="@item.Id"
+                               class="btn btn-danger m-1">Cancel</a>
+
+                        </span>
+                        <div class="card-footer text-center">
+
+                        </div>
+                    </div>
+                }
+
+                <hr />
+
+                <h1>Friends (@Model.friends?.Count())</h1>
+                @foreach(var Friend in Model?.friends) {
+
+
+                    var photoPath = "~/images/UserProfileImage/" + ( Friend.Photo ?? "ProfileImage.jpg" );
+
+                    <div class="card ">
+
+                        <span class="card-header">
+                            <img src="@photoPath"
+                                 asp-append-version="true" style="height:30px;width:30px" />
+                            <a asp-controller="Users" asp-action="Profile" asp-route-id="@Friend.Id"><h5>@Friend.FName @Friend.LName</h5></a>
+
+                            <a asp-controller="Users" asp-action="UnFriend" asp-route-id="@Friend.Id"
+                               class="btn btn-danger  m-1">UnFriend</a>
+                        </span>
+                        <div class="card-footer text-center">
+
+                        </div>
+                    </div>
+                }
 
 
 
 
-                </div>
+            </div>
 
 
 
 
-                <div class="col-6">
-                    @foreach(var item in Model.mylist) {
-                        if(item.IsDeleted == false) {
-                            var photoPath = "~/images/" + item.Photo;
-                            var photoPorfile = "~/images/UserProfileImage/" + item.user.Photo;
-                            <form enctype="multipart/form-data" method="post"
-                                  asp-controller="Profile" asp-action="MakeNewPost">
+            <div class="col-6">
+                @foreach(var item in Model.mylist) {
+                    if(item.IsDeleted == false) {
+                        var photoPath = "~/images/" + item.Photo;
+                        var photoPorfile = "~/images/UserProfileImage/" + item.user.Photo;
+                        <form enctype="multipart/form-data" method="post"
+                              asp-controller="Profile" asp-action="MakeNewPost">
 
-                                <div class="card border-success mb-3 " style="max-width: 30rem;">
-                                    <div class="card-header bg-transparent border-success">
-                                        @{
-                                            if(photoPorfile != null) {
-                                                <img src="@photoPorfile" asp-append-version="true"
-                                                     class="rounded-circle"
-                                                     height="50" width="50"
-                                                     data-holder-rendered="true" />
-                                            } else {
-                                                <img src="~/images/UserProfileImage/ProfileImage.jpg"
-                                                     class="rounded-circle"
-                                                     height="50" width="50"
-                                                     data-holder-rendered="true"
-                                                     asp-append-version="true" />
-                                            }
+                            <div class="card border-success mb-3 " style="max-width: 30rem;">
+                                <div class="card-header bg-transparent border-success">
+                                    @{
+                                        if(photoPorfile != null) {
+                                            <img src="@photoPorfile" asp-append-version="true"
+                                                 class="rounded-circle"
+                                                 height="50" width="50"
+                                                 data-holder-rendered="true" />
+                                        } else {
+                                            <img src="~/images/UserProfileImage/ProfileImage.jpg"
+                                                 class="rounded-circle"
+                                                 height="50" width="50"
+                                                 data-holder-rendered="true"
+                                                 asp-append-version="true" />
                                         }
+                                    }
 
-                                        <label>
-                                            @Html.DisplayFor(modelItem => item.Date)
-                                        </label>
-                                        <label class="d-block">
-                                            @Html.DisplayFor(modelItem => item.user.FName)
-                                            @Html.DisplayFor(modelItem => item.user.LName)
-                                        </label>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-dark dropdown-toggle"
-                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false"></button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" asp-action="Delete"
-                                                   asp-route-id="@item.Id">Delete</a>
+                                    <label>
+                                        @Html.DisplayFor(modelItem => item.Date)
+                                    </label>
+                                    <label class="d-block">
+                                        @Html.DisplayFor(modelItem => item.user.FName)
+                                        @Html.DisplayFor(modelItem => item.user.LName)
+                                    </label>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-dark dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false"></button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" asp-action="Delete"
+                                               asp-route-id="@item.Id">Delete</a>
 
-                                                <a asp-controller="Profile" asp-action="Edit" asp-route-id="@item.Id"
-                                                   data-ajax="true" data-ajax-update="#modalDiv" class="dropdown-item"
-                                                   data-ajax-mode="replace" data-ajax-method="Get"
-                                                   data-ajax-success="showEditProfile()">Edit</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body text-success">
-                                        <label> @Html.DisplayFor(modelItem => item.feel)</label>
-                                        @if(item.Photo != null) {
-                                            <img src="@photoPath" asp-append-version="true"
-                                                 class="d-block" height="150" width="200" />
-                                        }
-                                        <p class="card-text">@Html.DisplayFor(modelItem => item.Text)</p>
-                                    </div>
-                                    <div class="card-footer bg-transparent border-success">
-                                        <div class="d-inline">
-                                            <div class="d-block">
-                                                <label> @Html.DisplayFor(modelItem => item.Likes)</label>
-                                            </div>
-                                            <div class="d-block">
-                                                <button>like</button>
-                                                <button>comment</button>
-                                            </div>
+                                            <a asp-controller="Profile" asp-action="Edit" asp-route-id="@item.Id"
+                                               data-ajax="true" data-ajax-update="#modalDiv" class="dropdown-item"
+                                               data-ajax-mode="replace" data-ajax-method="Get"
+                                               data-ajax-success="showEditProfile()">Edit</a>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        }
+                                <div class="card-body text-success">
+                                    <label> @Html.DisplayFor(modelItem => item.feel)</label>
+                                    @if(item.Photo != null) {
+                                        <img src="@photoPath" asp-append-version="true"
+                                             class="d-block" height="150" width="200" />
+                                    }
+                                    <p class="card-text">@Html.DisplayFor(modelItem => item.Text)</p>
+                                </div>
+                                <div class="card-footer bg-transparent border-success">
+                                    <div class="d-inline">
+                                        <div class="d-block">
+                                            <label> @Html.DisplayFor(modelItem => item.Likes)</label>
+                                        </div>
+                                        <div class="d-block">
+                                            @if(item.Likeslist?.FirstOrDefault(a => a.Users?.Id == UserID) == null) {
+                                                <a asp-controller="Profile" asp-action="Like" asp-route-id="@item.Id"
+                                                   class="btn btn-info">Like</a>
+                                            } else {
+
+                                                <a asp-controller="Profile" asp-action="Like" asp-route-id="@item.Id"
+                                                   class="btn btn-danger">UnLike</a>
+                                            }
+
+                                            <button>comment</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     }
-                </div>
+                }
             </div>
         </div>
-
-
-
     </div>
-        @section Scripts {
-            <script>
-                $(document).ready(function () {
-                    $('.custom-file-input').on("change", function () {
-                        var fileName = $(this).val().split("\\").pop();
-                        $(this).next('.custom-file-label').html(fileName);
-                    });
-                });
-                function showEditProfile() { $("#MyModalEdit").modal('toggle'); }
-                function showEditProfileUserInfo() { $("#MyModalEditUserInfo").modal('toggle'); }
-            </script>
-        }
+
+
+
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next('.custom-file-label').html(fileName);
+            });
+        });
+        function showEditProfile() { $("#MyModalEdit").modal('toggle'); }
+        function showEditProfileUserInfo() { $("#MyModalEditUserInfo").modal('toggle'); }
+    </script>
+}
 

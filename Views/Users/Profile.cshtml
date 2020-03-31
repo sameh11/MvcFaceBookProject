@@ -1,6 +1,7 @@
 ﻿@model Facebook.ViewModels.AddNewPost
 
-
+@inject UserManager<ApplicationUser> userManager
+@{string UserID = userManager.GetUserId(User); }
 @{
     ViewData["Title"] = "Index";
 }
@@ -32,7 +33,7 @@
                      style=" transform: translate(10%,-50%);" />
             }
             <div>
-           
+
                 <label class="display-4 text-dark">@Model.user.FName @Model.user.LName</label>
             </div>
         </div>
@@ -65,7 +66,7 @@
                             <input asp-for="@Model.user.BrithDate" type="datetime" readonly class="form-control" id="BrithDate" placeholder="BrithDate">
                         </div>
                     </div>
-          
+
                 </form>
             </div>
             <div class="card border-success mb-3 mt-1 col-6" style="max-width: 30rem;">
@@ -106,7 +107,7 @@
                             <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
                         </div>
                     </div>
-           
+
                 </form>
             </div>
             <div class="col-6">
@@ -142,19 +143,19 @@
                                         @Html.DisplayFor(modelItem => item.user.LName)
                                     </label>
                                     @*<div class="btn-group">
-                                        <button type="button" class="btn btn-dark dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false"></button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" asp-action="Delete"
-                                               asp-route-id="@item.Id">Delete</a>
+                                            <button type="button" class="btn btn-dark dropdown-toggle"
+                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false"></button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" asp-action="Delete"
+                                                   asp-route-id="@item.Id">Delete</a>
 
-                                            <a asp-controller="Profile" asp-action="Edit" asp-route-id="@item.Id"
-                                               data-ajax="true" data-ajax-update="#modalDiv" class="dropdown-item"
-                                               data-ajax-mode="replace" data-ajax-method="Get"
-                                               data-ajax-success="showEditProfile()">Edit</a>
-                                        </div>
-                                    </div>*@
+                                                <a asp-controller="Profile" asp-action="Edit" asp-route-id="@item.Id"
+                                                   data-ajax="true" data-ajax-update="#modalDiv" class="dropdown-item"
+                                                   data-ajax-mode="replace" data-ajax-method="Get"
+                                                   data-ajax-success="showEditProfile()">Edit</a>
+                                            </div>
+                                        </div>*@
                                 </div>
                                 <div class="card-body text-success">
                                     <label> @Html.DisplayFor(modelItem => item.feel)</label>
@@ -170,8 +171,15 @@
                                             <label> @Html.DisplayFor(modelItem => item.Likes)</label>
                                         </div>
                                         <div class="d-block">
-                                            <button>like</button>
-                                            <button>comment</button>
+                                        
+                                                @if(item.Likeslist?.FirstOrDefault(a => a.Users?.Id == UserID) == null) {
+                                                <a asp-controller="Users" asp-action="Like" asp-route-id="@item.Id"
+                                                   class="btn btn-info">Like</a>
+                                            } else {
+                                                <a asp-controller="Users" asp-action="Like" asp-route-id="@item.Id"
+                                                   class="btn btn-danger">UnLike</a>
+                                            }
+
                                         </div>
                                     </div>
                                 </div>

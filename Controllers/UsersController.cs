@@ -57,15 +57,58 @@ namespace Facebook.Controllers
     
         public IActionResult Profile(string id) {
 
-            
+            if(id == null)
+                id = Sswitch.id;
+            else
+            Sswitch.id = id;
+
+
             AddNewPost addNewPost = new AddNewPost();
-            addNewPost.mylist = context.Posts.OrderByDescending(a => a.Date).Where(a => a.user.Id == id).ToList();
+            addNewPost.mylist = context.Posts.OrderByDescending(a => a.Date).Where(a => a.user.Id == id).Include(a=>a.Likeslist).ThenInclude(x => x.Users).ToList();
             addNewPost.user = context.Users.Where(u => u.Id == id).SingleOrDefault();
             foreach(var item in addNewPost.mylist)
                 item.user = addNewPost.user;
             return View(addNewPost);
             
         }
+
+        public async Task<IActionResult> Like(int id) {
+
+            var user = await UserManager.GetUserAsync(User);
+            var post = context.Posts.FirstOrDefault(a => a.Id == id);
+
+            if(user == null || post == null) {
+                return View("Error");
+            }
+
+            var like_before = context.Likes.FirstOrDefault(q => q.Post == post && q.Users == user);
+            if(like_before != null) {
+
+                context.Likes.Remove(like_before);
+                post.Likes = post.Likes - 1;
+                context.Posts.Update(post);
+            } else {
+
+                like_before = new Like() {
+                    Date = DateTime.Now,
+                    IsDeleted = false,
+                    Post = post,
+                    Users = user,
+                    Type = React.like
+
+                };
+                post.Likes = post.Likes + 1;
+                context.Likes.Add(like_before);
+                context.Posts.Update(post);
+            }
+            await context.SaveChangesAsync();
+
+
+
+            return RedirectToAction( "Profile");
+
+        }
+
         public async Task<IActionResult> Cancel(string id) {
 
             var ReciverUser = await UserManager.GetUserAsync(User);
