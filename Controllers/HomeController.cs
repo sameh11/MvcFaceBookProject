@@ -28,6 +28,9 @@ namespace Facebook.Controllers
         //}
 
         public async Task<IActionResult> Index() {
+
+
+           // _context.Database.Migrate();
             var u = await userManager.GetUserAsync(User);
             AddNewPost addNewPost = new AddNewPost();
             List<Post> friendsPost = new List<Post>();
