@@ -1,13 +1,11 @@
 ﻿@model Facebook.ViewModels.AddNewPost
 @using Facebook.Models;
+
+@inject UserManager<ApplicationUser> userManager
+@{string UserID = userManager.GetUserId(User); }
 @{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
 
 
 
@@ -35,7 +33,74 @@
         </div>
 
     </form>
+
 </div>
+<div class="mt-5">
+    @foreach(var item in Model.mylist) {
+        if(item.IsDeleted == false) {
+            var photoPath = "~/images/" + item.Photo;
+            var photoPorfile = "~/images/UserProfileImage/" + item.user.Photo;
+            <form enctype="multipart/form-data" method="post"
+                  asp-controller="Profile" asp-action="MakeNewPost">
+
+                <div class="card border-success mb-3 " style="max-width: 30rem;">
+                    <div class="card-header bg-transparent border-success">
+                        @{
+                            if(photoPorfile != null) {
+                                <img src="@photoPorfile" asp-append-version="true"
+                                     class="rounded-circle"
+                                     height="50" width="50"
+                                     data-holder-rendered="true" />
+                            } else {
+                                <img src="~/images/UserProfileImage/ProfileImage.jpg"
+                                     class="rounded-circle"
+                                     height="50" width="50"
+                                     data-holder-rendered="true"
+                                     asp-append-version="true" />
+                            }
+                        }
+
+                        <label>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </label>
+                        <label class="d-block">
+                            @Html.DisplayFor(modelItem => item.user.FName)
+                            @Html.DisplayFor(modelItem => item.user.LName)
+                        </label>
+                    </div>
+                    <div class="card-body text-success">
+                        <label> @Html.DisplayFor(modelItem => item.feel)</label>
+                        @if(item.Photo != null) {
+                            <img src="@photoPath" asp-append-version="true"
+                                 class="d-block" height="150" width="200" />
+                        }
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Text)</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-success">
+                        <div class="d-inline">
+                            <div class="d-block">
+                                <label> @Html.DisplayFor(modelItem => item.Likes)</label>
+                            </div>
+                            <div class="d-block">
+                                @if(item.Likeslist?.FirstOrDefault(a => a.Users?.Id == UserID) == null) {
+                                    <a asp-controller="Home" asp-action="Like" asp-route-id="@item.Id"
+                                       class="btn btn-info">Like</a>
+                                } else {
+
+                                    <a asp-controller="Home" asp-action="Like" asp-route-id="@item.Id"
+                                       class="btn btn-danger">UnLike</a>
+                                }
+
+                                <button>comment</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        }
+    }
+</div>
+
 @section Scripts {
     <script>
         $(document).ready(function () {

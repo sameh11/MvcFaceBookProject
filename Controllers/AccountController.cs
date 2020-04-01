@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Facebook.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController :Controller
     {
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
@@ -25,7 +25,7 @@ namespace Facebook.Controllers
             RoleManager = roleManager;
             this.userManager = userManager;
             this.signInManager = signInManager;
-           
+
         }
 
         [HttpPost]
@@ -145,7 +145,7 @@ namespace Facebook.Controllers
 
 
 
-             
+
                 var user = await userManager.FindByEmailAsync(model.Email);
                 ///EmailConfirmed
                 //if(user != null && !user.EmailConfirmed &&
@@ -156,8 +156,8 @@ namespace Facebook.Controllers
 
 
 
-               // var user = await userManager.FindByEmailAsync(model.Email);
-            //    await userManager.AddToRoleAsync(user, "Admin");
+                // var user = await userManager.FindByEmailAsync(model.Email);
+                //    await userManager.AddToRoleAsync(user, "Admin");
 
 
                 var result = await signInManager.PasswordSignInAsync(model.Email,
@@ -203,9 +203,9 @@ namespace Facebook.Controllers
                 var user = new ApplicationUser {
                     UserName = model.Email,
                     Email = model.Email,
-                     BrithDate=model.BrithDate,
-                     FName=model.FName,
-                     LName=model.LName
+                    BrithDate = model.BrithDate,
+                    FName = model.FName,
+                    LName = model.LName
                 };
 
                 // Store user data in AspNetUsers database table
@@ -221,7 +221,7 @@ namespace Facebook.Controllers
                     var confirmationLink = "email confirmation \n " + Url.Action("ConfirmEmail", "Account",
                  new { userId = user.Id, token = token }, Request.Scheme);
 
-                   SendEmail("ConfirmEmail", confirmationLink, user.Email, $"{user.FName} {user.LName}");
+                    //  SendEmail("ConfirmEmail", confirmationLink, user.Email, $"{user.FName} {user.LName}");
                     //    logger.Log(LogLevel.Warning, confirmationLink);
 
 
@@ -229,14 +229,14 @@ namespace Facebook.Controllers
                     // Saves the role in the underlying AspNetRoles table
                     if(!await RoleManager.RoleExistsAsync("Admin"))
                         await RoleManager.CreateAsync(new IdentityRole { Name = "Admin" });
-                    
-              
+
+
 
                     // var user = await userManager.FindByEmailAsync(model.Email);
                     await userManager.AddToRoleAsync(user, "Admin");
 
                     await userManager.AddClaimsAsync(user,
-            ClaimsStore.AllClaims.Where(a=>a.Type!=""));
+            ClaimsStore.AllClaims.Where(a => a.Type != ""));
 
 
                     // If the user is signed in and in the Admin role, then it is
@@ -319,12 +319,12 @@ namespace Facebook.Controllers
                     var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
                     // Build the password reset link
-                    var passwordResetLink = "password reset link \n "+ Url.Action("ResetPassword", "Account",
+                    var passwordResetLink = "password reset link \n " + Url.Action("ResetPassword", "Account",
                             new { email = model.Email, token = token }, Request.Scheme);
 
                     // Log the password reset link
-                   // logger.Log(LogLevel.Warning, passwordResetLink);
-                    SendEmail("ConfirmEmail", passwordResetLink, user.Email, $"{user.FName} {user.LName}");
+                    // logger.Log(LogLevel.Warning, passwordResetLink);
+                    //   SendEmail("ConfirmEmail", passwordResetLink, user.Email, $"{user.FName} {user.LName}");
 
                     // Send the user to Forgot Password Confirmation view
                     return View("ForgotPasswordConfirmation");
@@ -338,8 +338,8 @@ namespace Facebook.Controllers
             return View(model);
         }
 
-       [HttpGet]
-        public async Task<IActionResult> ChangePassword() { 
+        [HttpGet]
+        public async Task<IActionResult> ChangePassword() {
             var user = await userManager.GetUserAsync(User);
             var userHasPassword = await userManager.HasPasswordAsync(user);
             if(!userHasPassword) {
@@ -361,7 +361,7 @@ namespace Facebook.Controllers
                 var result = await userManager.ChangePasswordAsync(user,
                     model.CurrentPassword, model.NewPassword);
 
-               
+
                 // The new password did not meet the complexity rules or
                 // the current password is incorrect. Add these errors to
                 // the ModelState and rerender ChangePassword view
@@ -395,7 +395,7 @@ namespace Facebook.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model) {
             if(ModelState.IsValid) {
-             
+
                 var user = await userManager.FindByEmailAsync(model.Email);
 
                 if(user != null) {
@@ -403,13 +403,13 @@ namespace Facebook.Controllers
                     var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
                     if(result.Succeeded) {
 
-                    
+
                         if(await userManager.IsLockedOutAsync(user)) {
                             await userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
                         }
                         return View("ResetPasswordConfirmation");
                     }
-                 
+
 
                     foreach(var error in result.Errors) {
                         ModelState.AddModelError("", error.Description);
@@ -466,28 +466,28 @@ namespace Facebook.Controllers
             return View();
         }
 
-        public void SendEmail(string emailSubject, string emailBody, string toEmail, string toName) {
+        //public void SendEmail(string emailSubject, string emailBody, string toEmail, string toName) {
 
 
-            var fromAddress = new MailAddress("zojjof@gmail.com", "Facebook");
-            var toAddress = new MailAddress(toEmail, toName);
-            string subject = emailSubject;
-            string body = emailBody;
-            var smtp = new SmtpClient {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
-            using(var message = new MailMessage(fromAddress, toAddress) {
-                Subject = subject,
-                Body = body
-            }) {
-                smtp.Send(message);
-            }
-        }
+        //    var fromAddress = new MailAddress("zojjof@gmail.com", "Facebook");
+        //    var toAddress = new MailAddress(toEmail, toName);
+        //    string subject = emailSubject;
+        //    string body = emailBody;
+        //    var smtp = new SmtpClient {
+        //        Host = "smtp.gmail.com",
+        //        Port = 587,
+        //        EnableSsl = true,
+        //        DeliveryMethod = SmtpDeliveryMethod.Network,
+        //        UseDefaultCredentials = false,
+        //        Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+        //    };
+        //    using(var message = new MailMessage(fromAddress, toAddress) {
+        //        Subject = subject,
+        //        Body = body
+        //    }) {
+        //        smtp.Send(message);
+        //    }
+        //}
 
 
 
