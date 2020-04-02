@@ -1,0 +1,195 @@
+﻿@using Facebook.Models;
+@model AddNewComment
+
+
+@inject UserManager<ApplicationUser> userManager
+@{string UserID = userManager.GetUserId(User); }
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+
+    <div class="mt-5">
+        @{var item = Model.post;
+            {
+                if(item.IsDeleted == false) {
+                    var photoPath = "~/images/" + item.Photo;
+                    var photoPorfile = "~/images/UserProfileImage/" + item.user.Photo;
+
+
+                <div class="card border-success mb-3 " style="max-width: 30rem;">
+                    <div class="card-header bg-transparent border-success">
+                        @{
+                            if(photoPorfile != null) {
+                                <img src="@photoPorfile" asp-append-version="true"
+                                     class="rounded-circle"
+                                     height="50" width="50"
+                                     data-holder-rendered="true" />
+                            } else {
+                                <img src="~/images/UserProfileImage/ProfileImage.jpg"
+                                     class="rounded-circle"
+                                     height="50" width="50"
+                                     data-holder-rendered="true"
+                                     asp-append-version="true" />
+                            }
+                        }
+
+                        <label>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </label>
+                        <label class="d-block">
+                            @Html.DisplayFor(modelItem => item.user.FName)
+                            @Html.DisplayFor(modelItem => item.user.LName)
+                        </label>
+                    </div>
+                    <div class="card-body text-success">
+                        <label> @Html.DisplayFor(modelItem => item.feel)</label>
+                        @if(item.Photo != null) {
+                            <img src="@photoPath" asp-append-version="true"
+                                 class="d-block" height="150" width="200" />
+                        }
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Text)</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-success">
+                        <div class="d-inline">
+                            <div class="d-block">
+                                <label> @Html.DisplayFor(modelItem => item.Likes)</label>
+                            </div>
+                            <div class="d-block">
+                                @if(item.Likeslist?.FirstOrDefault(a => a.Users?.Id == UserID) == null) {
+                                    <a asp-controller="Home" asp-action="Like" asp-route-id="@item.Id"
+                                       class="btn btn-info">Like</a>
+                                } else {
+
+                                    <a asp-controller="Home" asp-action="Like" asp-route-id="@item.Id"
+                                       class="btn btn-danger">UnLike</a>
+                                }
+
+                                <a href="#top"
+                                   class="btn">Comment</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @foreach(var item2 in Model?.post?.Comments) {
+                        if(item.IsDeleted == false) {
+                            photoPath = "~/images/" + item2.Photo;
+                            photoPorfile = "~/images/UserProfileImage/" + item2?.user?.Photo;
+
+                <div class="card border-success" style="width: 100%;">
+
+                    <form enctype="multipart/form-data" method="post"
+                          asp-controller="Comment" asp-action="MakeNewComment">
+
+                        <div class="card-header bg-transparent border-success">
+                            @{
+                                if(photoPorfile != null) {
+                                    <img src="@photoPorfile" asp-append-version="true"
+                                         class="rounded-circle"
+                                         height="25" width="25"
+                                         data-holder-rendered="true" />
+                                } else {
+                                    <img src="~/images/UserProfileImage/ProfileImage.jpg"
+                                         class="rounded-circle"
+                                         height="25" width="25"
+                                         data-holder-rendered="true"
+                                         asp-append-version="true" />
+                                }
+                            }
+
+
+                            <label>
+                                @Html.DisplayFor(modelItem => item2.user.FName)
+                                @Html.DisplayFor(modelItem => item2.user.LName)
+                            </label>
+
+                            <label>
+                                @Html.DisplayFor(modelItem => item2.Date)
+                            </label>
+                        </div>
+                        <div class="card-body text-success">
+                            @if(item2.Photo != null) {
+                                <img src="@photoPath" asp-append-version="true"
+                                     class="d-block" height="150" width="200" />
+                            }
+                            <p class="card-text">@Html.DisplayFor(modelItem => item2.Text)</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-success" style="max-width: 30rem;">
+                            <div class="d-inline">
+
+                                <div class="d-block">
+                                    @if(item.Likeslist?.FirstOrDefault(a => a.Users?.Id == UserID) == null) {
+                                        <a asp-controller="Home" asp-action="Like" asp-route-id="@item.Id"
+                                           class="btn-info">Like</a>
+                                    } else {
+
+                                        <a asp-controller="Home" asp-action="Like" asp-route-id="@item.Id"
+                                           class="btn-danger">UnLike</a>
+                                    }
+
+                                    <a href="#top">Replay</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                        </div>
+
+                        }
+                    }
+
+
+
+
+
+
+                    <div class="card border-success" @*style="max-width: 30rem;"*@>
+                        <form enctype="multipart/form-data" method="post"
+                              asp-controller="Comment" asp-action="MakeNewComment">
+
+                            <div class="card-body text-success">
+                                <textarea asp-for="Text" placeholder="What's in your mind"></textarea>
+                                <div class="custom-file">
+                                    <input asp-for="Photo" class="form-control custom-file-input">
+                                    <label class="custom-file-label">Choose File...</label>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-transparent border-success">
+                                <input type="submit" value="Comment" />
+                            </div>
+
+                        </form>
+
+                    </div>
+
+
+
+                </div>
+
+
+
+       
+
+                    <a name="top"></a>
+                }
+            }
+        }
+    </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next('.custom-file-label').html(fileName);
+            });
+        });
+    </script>
+}
+
+
+
