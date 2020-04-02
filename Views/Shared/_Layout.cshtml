@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="~/images/fb16.png" sizes="16x16">
     <link rel="icon" type="image/png" href="~/images/fb32.png" sizes="32x32">
-
+    <link href="~/font-awesome/css/all.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
@@ -16,45 +16,56 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/css/OldPostStyle.css" rel="stylesheet" />
     <link href="~/css/postStyle.css" rel="stylesheet" />
-
+    <script src="~/font-awesome/js/all.js"></script>
     <title>@ViewBag.Title - Facebook</title>
 
+    <style>
+        .nb {
+            background-color: #2275ef;
+        }
 
+        .WColor {
+            color: white;
+        }
+
+            .WColor:hover {
+                color: black;
+            }
+
+        input :focus {
+            outline: none;
+        }
+
+
+    </style>
 
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+        <nav class="navbar navbar-expand-sm @*bg-info*@ navbar-dark nb">
             <a class="navbar-brand" asp-controller="home" asp-action="index">
-                <img src="~/images/fb.png" width="120" height="35">
+                <i class="fab fa-facebook fa-2x"></i>
+                @*<img src="~/images/fb.png" width="120" height="35">*@
             </a>
             <ul class="navbar-nav">
 
 
-                @if(SignInManager.IsSignedIn(User)) {
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Manage
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-
-                            <a class="dropdown-item" asp-controller="Account"
-                               asp-action="ChangePassword">
-                                Password
-                            </a>
-                            <br />
-                            @if(true@*User.IsInRole("Admin")*@) {
-
-<a class="dropdown-item" asp-controller="Administration"
-   asp-action="ListUsers"> Users</a>
-<a class="dropdown-item" asp-controller="Administration"
-   asp-action="ListRoles"> Roles</a>
-
-}
-                        </div>
-
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item ">
+                        <form class="form-inline my-2 my-lg-0" method="get" Controller="Usres" action="Users">
+                            <div class="input-group" style="border:1px solid white; border-radius:20px">
+                                <input class="form-control bg-transparent " name="SearchTerm" type="text" placeholder="Search" aria-describedby="basic-addon1" style="border:none">
+                                <div class="input-group-prepend ">
+                                    <span class="input-group-text bg-transparent" id="basic-addon1" style="border:none">
+                                        <button type="submit" class="bg-transparent border-0"><i class="fas fa-search WColor"></i> </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
                     </li>
+
+                   
                 }
             </ul>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -63,30 +74,66 @@
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav ml-auto">
                     @*If the user is signed-in display Logout link*@
-                    @if(SignInManager.IsSignedIn(User)) {
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li>
+                            <ul class="nav navbar-nav navbar-right">
 
-                        <ul class="nav navbar-nav navbar-right">
+                                <li class="nav-item mr-3" style="margin:auto">
+                                    <div>
+                                        <a asp-area="" asp-controller="profile" asp-action="Index" style="color:white;">
+                                            <span class="glyphicon glyphicon-user" >
+                                            </span>  profile
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                   
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white">
+                                        Manage
+                                    </a>
 
-                            <li><a asp-area="" asp-controller="Users" asp-action="Index"> Search    </a></li>
-                            <li><a asp-area="" asp-controller="profile" asp-action="Index"><span class="glyphicon glyphicon-user"></span>  profile </a></li>
-                            <li class="nav-item">
-                                <form method="post" asp-controller="account" asp-action="logout">
-                                    @*<a href="/profile">profile</a>*@
-                                    <button type="submit" style="width:auto"
-                                            class="nav-link btn btn-link py-0">
-                                        Logout @applicationUser.FName.
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    } else {
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                                        <a class="dropdown-item" asp-controller="Account"
+                                           asp-action="ChangePassword" >
+                                            Password
+                                        </a>
+                                        <hr />
+                                        @if (true@*User.IsInRole("Admin")*@)
+      {
+
+                            <a class="dropdown-item" asp-controller="Administration"
+                               asp-action="ListUsers"> Users</a>
+                            <a class="dropdown-item" asp-controller="Administration"
+                               asp-action="ListRoles"> Roles</a>
+
+                        }
+                                    </div>
+
+                                </li>
+                                <li class="nav-item" style="margin:auto">
+                                    <form method="post" asp-controller="account" asp-action="logout">
+                                        @*<a href="/profile">profile</a>*@
+                                        <button type="submit" style="width:auto ; color:white;"
+                                                class="nav-link btn btn-link py-0" >
+                                            Logout @applicationUser.FName
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="account" asp-action="register">
+                            <a class="nav-link text-white" asp-controller="account" asp-action="register">
                                 Register
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="account" asp-action="login">
+                            <a class="nav-link text-white" asp-controller="account" asp-action="login">
                                 Login
                             </a>
                         </li>
@@ -100,13 +147,13 @@
             @RenderBody()
         </main>
     </div>
-    <br />
-    <br />
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - Facebook - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+
+    @* <footer class="footer text-muted">*@
+    <div class="container">
+        <hr />
+        <span class="text-muted">&copy; 2020 - Facebook - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></span>
+    </div>
+    @* </footer>*@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

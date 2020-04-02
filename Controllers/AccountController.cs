@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+
 namespace Facebook.Controllers
 {
     public class AccountController :Controller
@@ -19,13 +20,14 @@ namespace Facebook.Controllers
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
 
+        public RoleManager<IdentityRole> RoleManager { get; }
+        public ILogger<AccountController> Logger { get; }
 
-
-        public AccountController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) {
+        public AccountController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<AccountController> logger) {
             RoleManager = roleManager;
             this.userManager = userManager;
             this.signInManager = signInManager;
-
+            Logger = logger;
         }
 
         [HttpPost]
@@ -221,8 +223,7 @@ namespace Facebook.Controllers
                     var confirmationLink = "email confirmation \n " + Url.Action("ConfirmEmail", "Account",
                  new { userId = user.Id, token = token }, Request.Scheme);
 
-                    //  SendEmail("ConfirmEmail", confirmationLink, user.Email, $"{user.FName} {user.LName}");
-                    //    logger.Log(LogLevel.Warning, confirmationLink);
+      
 
 
 
@@ -239,19 +240,22 @@ namespace Facebook.Controllers
             ClaimsStore.AllClaims.Where(a => a.Type != ""));
 
 
+
+
                     // If the user is signed in and in the Admin role, then it is
                     // the Admin user that is creating a new user. So redirect the
                     // Admin user to ListRoles action
                     //if(signInManager.IsSignedIn(User) && User.IsInRole("Admin")) {
                     //    return RedirectToAction("ListUsers", "Administration");
                     //}
-
-                    ///abd0
-                    ///email confirmation
-                    //ViewBag.ErrorTitle = "Registration successful";
-                    //ViewBag.ErrorMessage = "Before you can Login, please confirm your " +
-                    //        "email, by clicking on the confirmation link we have emailed you";
-                    //return View("Error");
+                    SendEmail("ConfirmEmail", confirmationLink, user.Email, $"{user.FName} {user.LName}");
+                    Logger.Log(LogLevel.Warning, confirmationLink);
+                    // abd0
+                    // email confirmation
+                    ViewBag.ErrorTitle = "Registration successful";
+                    ViewBag.ErrorMessage = "Before you can Login, please confirm your " +
+                            "email, by clicking on the confirmation link we have emailed you";
+                    return View("Error");
 
 
 
@@ -322,9 +326,9 @@ namespace Facebook.Controllers
                     var passwordResetLink = "password reset link \n " + Url.Action("ResetPassword", "Account",
                             new { email = model.Email, token = token }, Request.Scheme);
 
-                    // Log the password reset link
-                    // logger.Log(LogLevel.Warning, passwordResetLink);
-                    //   SendEmail("ConfirmEmail", passwordResetLink, user.Email, $"{user.FName} {user.LName}");
+                //    Log the password reset link
+                     Logger.Log(LogLevel.Warning, passwordResetLink);
+                    SendEmail("ConfirmEmail", passwordResetLink, user.Email, $"{user.FName} {user.LName}");
 
                     // Send the user to Forgot Password Confirmation view
                     return View("ForgotPasswordConfirmation");
@@ -458,7 +462,7 @@ namespace Facebook.Controllers
 
         const string fromPassword = "5478963210";
 
-        public RoleManager<IdentityRole> RoleManager { get; }
+
 
         [HttpGet]
         [AllowAnonymous]
@@ -466,28 +470,28 @@ namespace Facebook.Controllers
             return View();
         }
 
-        //public void SendEmail(string emailSubject, string emailBody, string toEmail, string toName) {
+        public void SendEmail(string emailSubject, string emailBody, string toEmail, string toName) {
 
 
-        //    var fromAddress = new MailAddress("zojjof@gmail.com", "Facebook");
-        //    var toAddress = new MailAddress(toEmail, toName);
-        //    string subject = emailSubject;
-        //    string body = emailBody;
-        //    var smtp = new SmtpClient {
-        //        Host = "smtp.gmail.com",
-        //        Port = 587,
-        //        EnableSsl = true,
-        //        DeliveryMethod = SmtpDeliveryMethod.Network,
-        //        UseDefaultCredentials = false,
-        //        Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-        //    };
-        //    using(var message = new MailMessage(fromAddress, toAddress) {
-        //        Subject = subject,
-        //        Body = body
-        //    }) {
-        //        smtp.Send(message);
-        //    }
-        //}
+            var fromAddress = new MailAddress("zojjof@gmail.com", "Facebook");
+            var toAddress = new MailAddress(toEmail, toName);
+            string subject = emailSubject;
+            string body = emailBody;
+            var smtp = new SmtpClient {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using(var message = new MailMessage(fromAddress, toAddress) {
+                Subject = subject,
+                Body = body
+            }) {
+                smtp.Send(message);
+            }
+        }
 
 
 

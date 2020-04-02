@@ -3,84 +3,129 @@
 @{string UserID = userManager.GetUserId(User); }
 <div class="row">
     <br />
-    <div class="col-sm-6 col-sm-offset-3">
-        <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
-                <form method="get">
-                    <div class="form-group">
-                        <strong>Find by Name or Username:</strong>
 
-
-
-                        <input type="text" name="SearchTerm" class="form-control" />
-                        <br />
-                        <div>
-                            @*<a asp-controller="Users" asp-action="Index" asp-route-SearchTerm="@user.Id"
-                                class="btn btn-primary m-1">Search</a>*@
-                            <button type="submit" class="btn btn-primary">Search</button> |
-                            <a asp-controller="Users">Back to Full List</a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <hr />
-    </div>
 </div>
-<div class="card-deck">
+<div class="card-deck" style="
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+">
 
+    <h5 class="offset-2"> People</h5>
+    <br />
+    <br />
+    @foreach (var user in Model.users)
+    {
 
+        if (user.Id != UserID)
+        {
+            var photoPath = "~/images/UserProfileImage/" + (user.Photo ?? "ProfileImage.jpg");
 
-    @foreach(var user in Model.users) {
+            <div class="offset-2 col-8 row">
 
-        if(user.Id != UserID) {
-            var photoPath = "~/images/UserProfileImage/" + ( user.Photo ?? "ProfileImage.jpg" );
-            <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
-                <div class="card-header">
-                    <h3>@user.FName @user.LName</h3>
+                <div class="col-1">
+                    <img class="rounded-circle d-flex " src="@photoPath" asp-append-version="true" style="width:60px; height:60px" />
                 </div>
+                <div class="col-6 ml-3 mt-3">
+                    <a asp-controller="Users" asp-action="Profile" asp-route-id="@user.Id" style="text-decoration-style:none; color:black;">@user.FName @user.LName</a>
+                </div>
+                <div class="col-1 p-3">
 
-                <img class="card-img-top imageThumbnail" src="@photoPath"
-                     asp-append-version="true" style="height:200px;width:auto" />
-
-                <div class="card-footer text-center">
-                    <a asp-controller="Users" asp-action="Profile" asp-route-id="@user.Id"
-                       class="btn btn-primary m-1">Profile</a>
                     @{
                         var Friendpenn = Model.FriendRequestsSent.Where(a => a.IdRecive == user.Id && a.requestState == RequestState.Pending).FirstOrDefault();
                         var FriendaccebtOrcancle = Model.FriendRequestsReciev.Where(a => a.IdSend == user.Id && a.requestState == RequestState.Pending).FirstOrDefault();
                         var FriendaunFriend = Model.Friends.Where(a => a.Id == user.Id).FirstOrDefault();
 
 
-                        if(Friendpenn != null) {
+                        if (Friendpenn != null)
+                        {
                             <a asp-controller="Users" asp-action="remove" asp-route-id="@user.Id"
-                               class="btn btn-dark  m-1">Remove Re</a>
+                               class="mt-2"><i class="fas fa-user-times fa-2x"></i></a>
 
-                        } else if(FriendaccebtOrcancle != null) {
+                        }
+                        else if (FriendaccebtOrcancle != null)
+                        {
 
                             <a asp-controller="Users" asp-action="Accept" asp-route-id="@user.Id"
-                               class="btn btn-success  m-1">Accept</a>
+                               class="mt-2"><i class="fas fa-user-check fa-2x"></i></a>
 
-                        } else if(FriendaunFriend != null) {
+                        }
+                        else if (FriendaunFriend != null)
+                        {
 
                             <a asp-controller="Users" asp-action="UnFriend" asp-route-id="@user.Id"
-                               class="btn btn-danger  m-1">UnFriend</a>
-                        } else {
+                               class="mt-2"><i class="fas fa-user-friends fa-2x"></i></a>
+                        }
+                        else
+                        {
 
                             <a asp-controller="Users" asp-action="AddFriend" asp-route-id="@user.Id"
-                               class="btn btn-info m-1">Add Friend</a>
+                               class="mt-2"><i class="fas fa-user-plus fa-2x"></i></a>
                         }
 
-                   
+
                     }
 
 
-                    <a href="#" class="btn btn-danger m-1">Block</a>
+
                 </div>
+                <div class="col-1 p-3">
+                    <a href="#"><i class="fas fa-ban fa-2x" style=" color: red !important;"></i></a>
+                </div>
+
             </div>
+            <hr class="w-75" />
+
+            @*<div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+                    <div class="card-header">
+                        <h3>@user.FName @user.LName</h3>
+                    </div>
+
+                    <img class="card-img-top imageThumbnail" src="@photoPath"
+                         asp-append-version="true" style="height:200px;width:auto" />
+
+                    <div class="card-footer text-center">
+                        <a asp-controller="Users" asp-action="Profile" asp-route-id="@user.Id"
+                           class="btn btn-primary m-1">Profile</a>
+                        @{
+                            //var Friendpenn = Model.FriendRequestsSent.Where(a => a.IdRecive == user.Id && a.requestState == RequestState.Pending).FirstOrDefault();
+                            //var FriendaccebtOrcancle = Model.FriendRequestsReciev.Where(a => a.IdSend == user.Id && a.requestState == RequestState.Pending).FirstOrDefault();
+                            //var FriendaunFriend = Model.Friends.Where(a => a.Id == user.Id).FirstOrDefault();
+
+
+                            if(Friendpenn != null) {
+                                <a asp-controller="Users" asp-action="remove" asp-route-id="@user.Id"
+                                   class="btn btn-dark  m-1">Remove Re</a>
+
+                            } else if(FriendaccebtOrcancle != null) {
+
+                                <a asp-controller="Users" asp-action="Accept" asp-route-id="@user.Id"
+                                   class="btn btn-success  m-1">Accept</a>
+
+                            } else if(FriendaunFriend != null) {
+
+                                <a asp-controller="Users" asp-action="UnFriend" asp-route-id="@user.Id"
+                                   class="btn btn-danger  m-1">UnFriend</a>
+                            } else {
+
+                                <a asp-controller="Users" asp-action="AddFriend" asp-route-id="@user.Id"
+                                   class="btn btn-info m-1">Add Friend</a>
+                            }
+
+
+                        }
+
+
+                        <a href="#" class="btn btn-danger m-1">Block</a>
+                    </div>
+                </div>*@
         }
     }
+<div class="alert alert-dark col-8 offset-2" style="text-align:center;" role="alert">
+    <a asp-controller="Users" >Back to Full List</a>
 </div>
+</div>
+
 
 @*<div class="row">
         <br />
