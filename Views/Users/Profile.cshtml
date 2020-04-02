@@ -171,15 +171,16 @@
                                             <label> @Html.DisplayFor(modelItem => item.Likes)</label>
                                         </div>
                                         <div class="d-block">
-                                        
-                                                @if(item.Likeslist?.FirstOrDefault(a => a.Users?.Id == UserID) == null) {
+
+                                            @if(item.Likeslist?.FirstOrDefault(a => a.Users?.Id == UserID) == null) {
                                                 <a asp-controller="Users" asp-action="Like" asp-route-id="@item.Id"
                                                    class="btn btn-info">Like</a>
                                             } else {
                                                 <a asp-controller="Users" asp-action="Like" asp-route-id="@item.Id"
                                                    class="btn btn-danger">UnLike</a>
                                             }
-
+                                            <a asp-controller="comment" asp-action="index" asp-route-id="@item.Id"
+                                               class="btn">Comment</a>
                                         </div>
                                     </div>
                                 </div>
